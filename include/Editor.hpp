@@ -1,6 +1,7 @@
 // this file manages the attributes of the editor interface
 
 #pragma once
+#include "Cursor.hpp"
 #include <termbox2.h>
 
 class Editor {
@@ -14,4 +15,9 @@ public:
   void editorInit();
   void editorUpdate();
   void editorExit();
+
+  void processKeyPress();
+
+private:
+  Cursor m_cursor = Cursor();
 };
