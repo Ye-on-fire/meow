@@ -7,8 +7,11 @@ class Editor {
 public:
   Editor() = default;
 
+  ~Editor();
+
 public:
-  tb_event ev;
+  tb_event event;
   void editorInit();
   void editorUpdate();
+  void editorExit();
 };
