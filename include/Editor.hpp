@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Cursor.hpp"
+#include "File.hpp"
 #include <termbox2.h>
 
 class Editor {
@@ -20,4 +21,5 @@ public:
 
 private:
   Cursor m_cursor = Cursor();
+  File m_file = File("Hello.txt");
 };

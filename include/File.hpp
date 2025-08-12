@@ -3,12 +3,14 @@
  */
 
 #pragma once
-
+#include "TextLine.hpp"
 #include <string>
+#include <vector>
+
 class File {
 public:
   File() = delete;
-  File(std::string filename, std::string text, int numrows);
+  File(std::string filename);
   File(const File &other) = default;
   File(File &&other) noexcept = default;
   File &operator=(const File &other) = default;
@@ -17,13 +19,15 @@ public:
   ~File() = default;
 
 public:
-  std::string &text();
-  const std::string &text() const;
+  const std::vector<TextLine> &rows() const;
   const std::string &filename() const;
-  int &numrows();
+  std::size_t &numrows();
+
+  // get the cstr of std::string by row to printout by tb_printf
+  const char *getCStrByRow(std::size_t numrow) const;
 
 private:
+  std::vector<TextLine> m_rows;
   std::string m_filename = "Untitled";
-  std::string m_text;
-  int m_numrows = 0;
+  std::size_t m_numrows = 0;
 };

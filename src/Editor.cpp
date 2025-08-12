@@ -10,6 +10,9 @@ void Editor::editorInit() { tb_init(); }
 // what to do in the main loop
 void Editor::editorUpdate() {
   processKeyPress();
+  for (std::size_t y = 0; y < m_file.numrows(); y++) {
+    tb_printf(0, y, 0, 0, m_file.rows()[y].raw().c_str());
+  }
   tb_present();
 }
 

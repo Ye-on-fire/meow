@@ -7,7 +7,7 @@ public:
   TextLine(std::string raw);
 
   const std::string &raw() const;
-  int raw_size() const;
+  std::size_t raw_size() const;
 
 private:
   std::string m_raw;
