@@ -69,16 +69,26 @@ void Editor::handleKeyEvents() {
     } else if (event.key == TB_KEY_CTRL_Q) {
       editorExit();
       exit(0);
+    } else if (event.key == TB_KEY_ARROW_LEFT) {
+      m_cursor->moveOffset(-1, 0);
+    } else if (event.key == TB_KEY_ARROW_RIGHT) {
+      m_cursor->moveOffset(1, 0);
+    } else if (event.key == TB_KEY_ARROW_DOWN) {
+      m_cursor->moveOffset(0, 1);
+    } else if (event.key == TB_KEY_ARROW_UP) {
+      m_cursor->moveOffset(0, -1);
     }
   }
 }
 
 void Editor::editorScroll() {
+  // check border of cursor
   if (m_cursor->cx() < 0)
     m_cursor->moveTo(0, m_cursor->cy());
   if (m_cursor->cy() < 0)
     m_cursor->moveTo(m_cursor->cx(), 0);
 
+  // check rowoffset of cursor
   if (m_cursor->cy() < m_rowoffset) {
     m_rowoffset = m_cursor->cy();
   }
