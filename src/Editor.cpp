@@ -4,8 +4,10 @@
 // exit when editor exit
 Editor::~Editor() { editorExit(); }
 
-const int Editor::width() const { return m_width; }
-const int Editor::height() const { return m_height; }
+int Editor::width() const { return m_width; }
+int Editor::height() const { return m_height; }
+int Editor::rowoffset() const { return m_rowoffset; }
+int Editor::coloffset() const { return m_coloffset; }
 
 void Editor::handleEvents() {
   tb_peek_event(&event, 100);
@@ -30,8 +32,11 @@ void Editor::editorInit() {
 // what to do in the main loop
 void Editor::editorUpdate() {
   handleEvents();
+  editorScroll();
+  m_cursor->renderCursor(m_width, m_height, m_rowoffset, m_coloffset);
   for (int y = 0; y < m_height; y++) {
-    tb_printf(0, y, 0, 0, m_file.getCStrByRow(y));
+    int filerow = y + m_rowoffset;
+    tb_printf(0, y, 0, 0, m_file->getCStrByRow(filerow));
   }
   tb_present();
 }
@@ -44,21 +49,35 @@ void Editor::handleKeyEvents() {
     if (event.key == 0) {
       switch (event.ch) {
       case 'h':
-        m_cursor.moveToOffset(-1, 0);
+        m_cursor->moveOffset(-1, 0);
         break;
       case 'l':
-        m_cursor.moveToOffset(1, 0);
+        m_cursor->moveOffset(1, 0);
         break;
       case 'j':
-        m_cursor.moveToOffset(0, 1);
+        m_cursor->moveOffset(0, 1);
         break;
       case 'k':
-        m_cursor.moveToOffset(0, -1);
+        m_cursor->moveOffset(0, -1);
         break;
       }
     } else if (event.key == TB_KEY_CTRL_Q) {
       editorExit();
       exit(0);
     }
+  }
+}
+
+void Editor::editorScroll() {
+  if (m_cursor->cx() < 0)
+    m_cursor->moveTo(0, m_cursor->cy());
+  if (m_cursor->cy() < 0)
+    m_cursor->moveTo(m_cursor->cx(), 0);
+
+  if (m_cursor->cy() < m_rowoffset) {
+    m_rowoffset = m_cursor->cy();
+  }
+  if (m_cursor->cy() >= m_height + m_rowoffset) {
+    m_rowoffset = m_cursor->cy() - m_height + 1;
   }
 }

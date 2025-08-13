@@ -3,6 +3,7 @@
 #pragma once
 #include "Cursor.hpp"
 #include "File.hpp"
+#include <memory>
 #include <termbox2.h>
 
 class Editor {
@@ -13,8 +14,10 @@ public:
 
 public:
   tb_event event;
-  const int width() const;
-  const int height() const;
+  int width() const;
+  int height() const;
+  int rowoffset() const;
+  int coloffset() const;
 
   // program lifetime control
   void editorInit();
@@ -26,9 +29,14 @@ public:
   void handleKeyEvents();
   void handleResizeEvents();
 
+  // scroll
+  void editorScroll();
+
 private:
-  Cursor m_cursor;
-  File m_file{"build.ninja"};
+  std::unique_ptr<Cursor> m_cursor = std::make_unique<Cursor>();
+  std::unique_ptr<File> m_file = std::make_unique<File>("build.ninja");
   int m_width = 0;
   int m_height = 0;
+  int m_rowoffset = 0;
+  int m_coloffset = 0;
 };
