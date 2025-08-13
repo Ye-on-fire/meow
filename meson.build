@@ -1,4 +1,4 @@
-project('meow', 'cpp')
+project('meow', 'cpp', default_options: ['cpp_std=c++23'])
 
 tb_dep = dependency('termbox2')
 

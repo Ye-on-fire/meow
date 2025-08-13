@@ -4,6 +4,7 @@
 
 #pragma once
 #include "TextLine.hpp"
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -19,7 +20,7 @@ public:
   ~File() = default;
 
 public:
-  const std::vector<TextLine> &rows() const;
+  const std::vector<std::unique_ptr<TextLine>> &rows() const;
   const std::string &filename() const;
   int &numrows();
 
@@ -29,7 +30,7 @@ public:
   void loadFile();
 
 private:
-  std::vector<TextLine> m_rows;
+  std::vector<std::unique_ptr<TextLine>> m_rows;
   std::string m_filename = "Untitled";
   int m_numrows = 0;
 };
