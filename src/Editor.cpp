@@ -31,12 +31,17 @@ void Editor::editorInit() {
 
 // what to do in the main loop
 void Editor::editorUpdate() {
+  tb_clear();
   handleEvents();
   editorScroll();
   m_cursor->renderCursor(m_width, m_height, m_rowoffset, m_coloffset);
   for (int y = 0; y < m_height; y++) {
     int filerow = y + m_rowoffset;
-    tb_printf(0, y, 0, 0, m_file->getCStrByRow(filerow));
+    if (filerow < m_file->numrows()) {
+      tb_printf(0, y, 0, 0, m_file->getCStrByRow(filerow));
+    } else {
+      tb_printf(0, y, TB_BLUE, 0, "~");
+    }
   }
   tb_present();
 }
