@@ -9,7 +9,7 @@
 
 class File {
 public:
-  File() = delete;
+  File() = default;
   File(std::string filename);
   File(const File &other) = default;
   File(File &&other) noexcept = default;
@@ -21,13 +21,15 @@ public:
 public:
   const std::vector<TextLine> &rows() const;
   const std::string &filename() const;
-  std::size_t &numrows();
+  int &numrows();
 
   // get the cstr of std::string by row to printout by tb_printf
-  const char *getCStrByRow(std::size_t numrow) const;
+  const char *getCStrByRow(int numrow) const;
+
+  void loadFile();
 
 private:
   std::vector<TextLine> m_rows;
   std::string m_filename = "Untitled";
-  std::size_t m_numrows = 0;
+  int m_numrows = 0;
 };

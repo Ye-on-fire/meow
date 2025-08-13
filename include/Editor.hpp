@@ -13,13 +13,22 @@ public:
 
 public:
   tb_event event;
+  const int width() const;
+  const int height() const;
+
+  // program lifetime control
   void editorInit();
   void editorUpdate();
   void editorExit();
 
-  void processKeyPress();
+  // event handle
+  void handleEvents();
+  void handleKeyEvents();
+  void handleResizeEvents();
 
 private:
-  Cursor m_cursor = Cursor();
-  File m_file = File("Hello.txt");
+  Cursor m_cursor;
+  File m_file{"build.ninja"};
+  int m_width = 0;
+  int m_height = 0;
 };
