@@ -1,4 +1,4 @@
-project('kilocpp', 'cpp')
+project('meow', 'cpp')
 
 tb_dep = dependency('termbox2')
 
@@ -13,4 +13,4 @@ sources = [
 
 inc = include_directories('include')
 
-executable('kilocpp', sources, dependencies: [tb_dep], include_directories: inc)
+executable('meow', sources, dependencies: [tb_dep], include_directories: inc)

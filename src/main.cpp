@@ -1,7 +1,7 @@
 #include "Editor.hpp"
 #include <memory>
 
-#define PROJECT_NAME kilocpp
+#define PROJECT_NAME meow
 #define VERSION 0.0.1
 
 int main() {
