@@ -32,6 +32,8 @@ public:
   // scroll
   void editorScroll();
 
+  void editorLoadFile(std::string filename);
+
 private:
   std::unique_ptr<Cursor> m_cursor = std::make_unique<Cursor>();
   std::unique_ptr<File> m_file = std::make_unique<File>();

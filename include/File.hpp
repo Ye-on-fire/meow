@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#define DEFAULT_FILENAME "Untitled"
+
 class File {
 public:
   File() = default;
@@ -25,10 +27,11 @@ public:
   const std::string &filename() const;
   std::size_t &numrows();
 
-  void loadFile();
+  // loadfile by filename, return 0 success, return 1 fail
+  int loadFile(std::string filename);
 
 private:
   std::vector<std::unique_ptr<TextLine>> m_rows;
-  std::string m_filename = "Untitled";
+  std::string m_filename = DEFAULT_FILENAME;
   std::size_t m_numrows = 0;
 };

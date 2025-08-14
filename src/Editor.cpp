@@ -54,7 +54,10 @@ void Editor::editorUpdate() {
 }
 
 // do something when quiting the editor, called automatically in destructor
-void Editor::editorExit() { tb_shutdown(); }
+void Editor::editorExit() {
+  tb_shutdown();
+  spdlog::info("termbox2 shutdown");
+}
 
 void Editor::handleKeyEvents() {
   if (event.type == TB_EVENT_KEY) {
@@ -111,4 +114,8 @@ void Editor::editorScroll() {
   if (m_cursor->cx() >= m_width + m_coloffset) {
     m_coloffset = m_cursor->cx() - m_width + 1;
   }
+}
+
+void Editor::editorLoadFile(std::string filename) {
+  m_file->loadFile(std::move(filename));
 }
