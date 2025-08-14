@@ -40,9 +40,9 @@ void Editor::editorUpdate() {
     std::size_t filerow = y + m_rowoffset;
     if (filerow < m_file->numrows()) {
       std::size_t len = m_file->rows()[filerow]->raw_size();
-      if (m_coloffset < len) {
-        tb_printf(0, y, 0, 0,
-                  &m_file->rows()[filerow]->raw().c_str()[m_coloffset]);
+      std::size_t start = m_coloffset;
+      if (start < len) {
+        tb_printf(0, y, 0, 0, &m_file->rows()[filerow]->raw().c_str()[start]);
       }
     } else {
       tb_printf(0, y, TB_BLUE, 0, "~");

@@ -3,9 +3,7 @@
 #pragma once
 #include "Cursor.hpp"
 #include "File.hpp"
-#include <cstddef>
 #include <memory>
-#include <string_view>
 #include <termbox2.h>
 
 class Editor {
