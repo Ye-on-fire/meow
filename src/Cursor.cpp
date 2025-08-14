@@ -15,11 +15,13 @@ void Cursor::moveTo(int x, int y) {
   m_cy = y;
 }
 
-void Cursor::moveOffset(int offx, int offy) {
-  m_cx += offx;
-  m_cy += offy;
+// move with offset
+void Cursor::moveOffset(int dx, int dy) {
+  m_cx += dx;
+  m_cy += dy;
 }
 
+// calculates the render pos
 void Cursor::renderCursor(int t_width, int t_height, int rowoff, int coloff) {
   m_rx = m_cx - coloff;
   m_ry = m_cy - rowoff;

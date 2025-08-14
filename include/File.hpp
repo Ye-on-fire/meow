@@ -23,7 +23,8 @@ public:
   ~File() = default;
 
 public:
-  const std::vector<std::unique_ptr<TextLine>> &rows() const;
+  // get row by row number
+  const std::unique_ptr<TextLine> &row(std::size_t numrow) const;
   const std::string &filename() const;
   std::size_t &numrows();
 

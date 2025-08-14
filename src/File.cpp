@@ -6,8 +6,8 @@
 
 File::File(std::string filename) { loadFile(std::move(filename)); }
 
-const std::vector<std::unique_ptr<TextLine>> &File::rows() const {
-  return m_rows;
+const std::unique_ptr<TextLine> &File::row(std::size_t numrow) const {
+  return m_rows[numrow];
 }
 
 const std::string &File::filename() const { return m_filename; }

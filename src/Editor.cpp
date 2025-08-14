@@ -41,10 +41,10 @@ void Editor::editorUpdate() {
   for (int y = 0; y < m_height; y++) {
     std::size_t filerow = y + m_rowoffset;
     if (filerow < m_file->numrows()) {
-      std::size_t len = m_file->rows()[filerow]->raw_size();
+      std::size_t len = m_file->row(filerow)->raw_size();
       std::size_t start = m_coloffset;
       if (start < len) {
-        tb_printf(0, y, 0, 0, &m_file->rows()[filerow]->raw().c_str()[start]);
+        tb_printf(0, y, 0, 0, &m_file->row(filerow)->raw().c_str()[start]);
       }
     } else {
       tb_printf(0, y, TB_BLUE, 0, "~");
