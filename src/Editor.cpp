@@ -1,4 +1,5 @@
 #include "Editor.hpp"
+#include "Logger.hpp"
 #include <cstddef>
 #include <termbox2.h>
 
@@ -28,6 +29,7 @@ void Editor::editorInit() {
   tb_init();
   m_width = tb_width();
   m_height = tb_height();
+  spdlog::info("editor init");
 }
 
 // what to do in the main loop

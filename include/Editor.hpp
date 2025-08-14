@@ -34,7 +34,7 @@ public:
 
 private:
   std::unique_ptr<Cursor> m_cursor = std::make_unique<Cursor>();
-  std::unique_ptr<File> m_file = std::make_unique<File>("build.ninja");
+  std::unique_ptr<File> m_file = std::make_unique<File>();
   int m_width = 0;
   int m_height = 0;
   int m_rowoffset = 0;

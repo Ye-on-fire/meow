@@ -1,4 +1,5 @@
 #include "File.hpp"
+#include "Logger.hpp"
 #include "TextLine.hpp"
 #include <fstream>
 #include <utility>
@@ -18,8 +19,10 @@ std::size_t &File::numrows() { return m_numrows; }
 void File::loadFile() {
   // open file
   std::ifstream fs(m_filename);
-  if (!fs.is_open() || fs.bad())
+  if (!fs.is_open() || fs.bad()) {
+    spdlog::error("Failed to open file");
     throw "Failed to open file";
+  }
   // create lines into file
   std::string line;
   while (std::getline(fs, line)) {
@@ -27,4 +30,5 @@ void File::loadFile() {
     m_numrows++;
   }
   fs.close();
+  spdlog::info("loaded file {}, numrows: {}", m_filename, m_numrows);
 }
