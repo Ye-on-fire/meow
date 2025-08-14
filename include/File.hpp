@@ -4,8 +4,10 @@
 
 #pragma once
 #include "TextLine.hpp"
+#include <cstddef>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 class File {
@@ -22,15 +24,12 @@ public:
 public:
   const std::vector<std::unique_ptr<TextLine>> &rows() const;
   const std::string &filename() const;
-  int &numrows();
-
-  // get the cstr of std::string by row to printout by tb_printf
-  const char *getCStrByRow(int numrow) const;
+  std::size_t &numrows();
 
   void loadFile();
 
 private:
   std::vector<std::unique_ptr<TextLine>> m_rows;
   std::string m_filename = "Untitled";
-  int m_numrows = 0;
+  std::size_t m_numrows = 0;
 };

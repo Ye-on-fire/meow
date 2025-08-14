@@ -21,8 +21,9 @@ void Cursor::moveOffset(int offx, int offy) {
 }
 
 void Cursor::renderCursor(int t_width, int t_height, int rowoff, int coloff) {
+  m_rx = m_cx - coloff;
   m_ry = m_cy - rowoff;
-  tb_set_cursor(m_cx, m_ry);
+  tb_set_cursor(m_rx, m_ry);
 }
 
 void Cursor::hide() const { tb_hide_cursor(); }

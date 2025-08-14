@@ -13,11 +13,7 @@ const std::vector<std::unique_ptr<TextLine>> &File::rows() const {
 
 const std::string &File::filename() const { return m_filename; }
 
-int &File::numrows() { return m_numrows; }
-
-const char *File::getCStrByRow(int numrow) const {
-  return m_rows[numrow]->raw().c_str();
-}
+std::size_t &File::numrows() { return m_numrows; }
 
 void File::loadFile() {
   // open file
