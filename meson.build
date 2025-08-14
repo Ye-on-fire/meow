@@ -1,6 +1,7 @@
 project('meow', 'cpp', default_options: ['cpp_std=c++23'])
 
 tb_dep = dependency('termbox2')
+spd_log_dep = dependency('spdlog')
 
 sources = [
   'src/main.cpp',
@@ -13,4 +14,9 @@ sources = [
 
 inc = include_directories('include')
 
-executable('meow', sources, dependencies: [tb_dep], include_directories: inc)
+executable(
+  'meow',
+  sources,
+  dependencies: [tb_dep, spd_log_dep],
+  include_directories: inc,
+)
