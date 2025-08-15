@@ -60,6 +60,9 @@ void Editor::editorExit() {
 }
 
 void Editor::handleKeyEvents() {
+  const int max_y = m_file->numrows();
+  const int max_x =
+      m_cursor->cy() < max_y ? m_file->row(m_cursor->cy())->raw_size() : 0;
   if (event.type == TB_EVENT_KEY) {
     if (event.key == 0) {
       switch (event.ch) {
@@ -67,10 +70,14 @@ void Editor::handleKeyEvents() {
         m_cursor->moveOffset(-1, 0);
         break;
       case 'l':
-        m_cursor->moveOffset(1, 0);
+        if (m_cursor->cx() < max_x) {
+          m_cursor->moveOffset(1, 0);
+        }
         break;
       case 'j':
-        m_cursor->moveOffset(0, 1);
+        if (m_cursor->cy() < max_y) {
+          m_cursor->moveOffset(0, 1);
+        }
         break;
       case 'k':
         m_cursor->moveOffset(0, -1);
