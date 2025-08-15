@@ -77,6 +77,12 @@ void Editor::handleKeyEvents() {
       case 'j':
         if (m_cursor->cy() < max_y) {
           m_cursor->moveOffset(0, 1);
+          const int max_x_next_line =
+              m_cursor->cy() < max_y ? m_file->row(m_cursor->cy())->raw_size()
+                                     : 0;
+          if (m_cursor->cx() > max_x_next_line) {
+            m_cursor->moveTo(max_x_next_line, m_cursor->cy());
+          }
         }
         break;
       case 'k':
