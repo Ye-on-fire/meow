@@ -32,6 +32,13 @@ public:
   // scroll
   void editorScroll();
 
+  // editor cursor movement, Up and Down restricted by max_y of the file, while
+  // right considering max_x;
+  void editorMoveCursorDown(int max_y);
+  void editorMoveCursorUp();
+  void editorMoveCursorRight(int max_x);
+  void editorMoveCursorLeft();
+
   void editorLoadFile(std::string filename);
 
 private:

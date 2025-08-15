@@ -59,6 +59,40 @@ void Editor::editorExit() {
   spdlog::info("termbox2 shutdown");
 }
 
+void Editor::editorMoveCursorDown(int max_y) {
+  if (m_cursor->cy() < max_y) {
+    m_cursor->moveOffset(0, 1);
+    const int max_x_below_line =
+        m_cursor->cy() < max_y ? m_file->row(m_cursor->cy())->raw_size() : 0;
+    if (m_cursor->cx() > max_x_below_line) {
+      m_cursor->moveTo(max_x_below_line, m_cursor->cy());
+    }
+  }
+}
+
+void Editor::editorMoveCursorRight(int max_x) {
+  if (m_cursor->cx() < max_x) {
+    m_cursor->moveOffset(1, 0);
+  }
+}
+
+void Editor::editorMoveCursorUp() {
+  if (m_cursor->cy() > 0) {
+    m_cursor->moveOffset(0, -1);
+    const int max_x_above_line =
+        m_cursor->cy() > 0 ? m_file->row(m_cursor->cy())->raw_size() : 0;
+    if (m_cursor->cx() > max_x_above_line) {
+      m_cursor->moveTo(max_x_above_line, m_cursor->cy());
+    }
+  }
+}
+
+void Editor::editorMoveCursorLeft() {
+  if (m_cursor->cx() > 0) {
+    m_cursor->moveOffset(-1, 0);
+  }
+}
+
 void Editor::handleKeyEvents() {
   const int max_y = m_file->numrows();
   const int max_x =
@@ -67,49 +101,39 @@ void Editor::handleKeyEvents() {
     if (event.key == 0) {
       switch (event.ch) {
       case 'h':
-        m_cursor->moveOffset(-1, 0);
+        editorMoveCursorLeft();
         break;
       case 'l':
-        if (m_cursor->cx() < max_x) {
-          m_cursor->moveOffset(1, 0);
-        }
+        editorMoveCursorRight(max_x);
         break;
       case 'j':
-        if (m_cursor->cy() < max_y) {
-          m_cursor->moveOffset(0, 1);
-          const int max_x_next_line =
-              m_cursor->cy() < max_y ? m_file->row(m_cursor->cy())->raw_size()
-                                     : 0;
-          if (m_cursor->cx() > max_x_next_line) {
-            m_cursor->moveTo(max_x_next_line, m_cursor->cy());
-          }
-        }
+        editorMoveCursorDown(max_y);
         break;
       case 'k':
-        m_cursor->moveOffset(0, -1);
+        editorMoveCursorUp();
         break;
       }
     } else if (event.key == TB_KEY_CTRL_Q) {
       editorExit();
       exit(0);
     } else if (event.key == TB_KEY_ARROW_LEFT) {
-      m_cursor->moveOffset(-1, 0);
+      editorMoveCursorLeft();
     } else if (event.key == TB_KEY_ARROW_RIGHT) {
-      m_cursor->moveOffset(1, 0);
+      editorMoveCursorRight(max_x);
     } else if (event.key == TB_KEY_ARROW_DOWN) {
-      m_cursor->moveOffset(0, 1);
+      editorMoveCursorDown(max_y);
     } else if (event.key == TB_KEY_ARROW_UP) {
-      m_cursor->moveOffset(0, -1);
+      editorMoveCursorUp();
     }
   }
 }
 
 void Editor::editorScroll() {
   // check border of cursor
-  if (m_cursor->cx() < 0)
-    m_cursor->moveTo(0, m_cursor->cy());
-  if (m_cursor->cy() < 0)
-    m_cursor->moveTo(m_cursor->cx(), 0);
+  // if (m_cursor->cx() < 0)
+  //   m_cursor->moveTo(0, m_cursor->cy());
+  // if (m_cursor->cy() < 0)
+  //   m_cursor->moveTo(m_cursor->cx(), 0);
 
   /// check rowoffset of cursor
   // scroll up, if pos is above visable screen, then scroll up
