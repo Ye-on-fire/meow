@@ -18,6 +18,8 @@ public:
   int height() const;
   int rowoffset() const;
   int coloffset() const;
+  int cursorx() const;
+  int cursory() const;
 
   // program lifetime control
   void editorInit();

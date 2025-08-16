@@ -10,6 +10,8 @@ int Editor::width() const { return m_width; }
 int Editor::height() const { return m_height; }
 int Editor::rowoffset() const { return m_rowoffset; }
 int Editor::coloffset() const { return m_coloffset; }
+int Editor::cursorx() const { return m_cursor->cx(); }
+int Editor::cursory() const { return m_cursor->cy(); }
 
 void Editor::handleEvents() {
   tb_peek_event(&event, 100);
@@ -60,43 +62,42 @@ void Editor::editorExit() {
 }
 
 void Editor::editorMoveCursorDown(int max_y) {
-  if (m_cursor->cy() < max_y) {
+  if (cursory() < max_y) {
     m_cursor->moveOffset(0, 1);
     const int max_x_below_line =
-        m_cursor->cy() < max_y ? m_file->row(m_cursor->cy())->raw_size() : 0;
-    if (m_cursor->cx() > max_x_below_line) {
-      m_cursor->moveTo(max_x_below_line, m_cursor->cy());
+        cursory() < max_y ? m_file->row(cursory())->raw_size() : 0;
+    if (cursorx() > max_x_below_line) {
+      m_cursor->moveTo(max_x_below_line, cursory());
     }
   }
 }
 
 void Editor::editorMoveCursorRight(int max_x) {
-  if (m_cursor->cx() < max_x) {
+  if (cursorx() < max_x) {
     m_cursor->moveOffset(1, 0);
   }
 }
 
 void Editor::editorMoveCursorUp() {
-  if (m_cursor->cy() > 0) {
+  if (cursory() > 0) {
     m_cursor->moveOffset(0, -1);
     const int max_x_above_line =
-        m_cursor->cy() > 0 ? m_file->row(m_cursor->cy())->raw_size() : 0;
-    if (m_cursor->cx() > max_x_above_line) {
-      m_cursor->moveTo(max_x_above_line, m_cursor->cy());
+        cursory() > 0 ? m_file->row(cursory())->raw_size() : 0;
+    if (cursorx() > max_x_above_line) {
+      m_cursor->moveTo(max_x_above_line, cursory());
     }
   }
 }
 
 void Editor::editorMoveCursorLeft() {
-  if (m_cursor->cx() > 0) {
+  if (cursorx() > 0) {
     m_cursor->moveOffset(-1, 0);
   }
 }
 
 void Editor::handleKeyEvents() {
   const int max_y = m_file->numrows();
-  const int max_x =
-      m_cursor->cy() < max_y ? m_file->row(m_cursor->cy())->raw_size() : 0;
+  const int max_x = cursory() < max_y ? m_file->row(cursory())->raw_size() : 0;
   if (event.type == TB_EVENT_KEY) {
     if (event.key == 0) {
       switch (event.ch) {
@@ -137,19 +138,19 @@ void Editor::editorScroll() {
 
   /// check rowoffset of cursor
   // scroll up, if pos is above visable screen, then scroll up
-  if (m_cursor->cy() < m_rowoffset) {
-    m_rowoffset = m_cursor->cy();
+  if (cursory() < m_rowoffset) {
+    m_rowoffset = cursory();
   }
   // scroll down, if pos is below visable screen, then scroll down
   // why +1? because m_height starts from 1, but cy starts from 0
-  if (m_cursor->cy() >= m_height + m_rowoffset) {
-    m_rowoffset = m_cursor->cy() - m_height + 1;
+  if (cursory() >= m_height + m_rowoffset) {
+    m_rowoffset = cursory() - m_height + 1;
   }
-  if (m_cursor->cx() < m_coloffset) {
-    m_coloffset = m_cursor->cx();
+  if (cursorx() < m_coloffset) {
+    m_coloffset = cursorx();
   }
-  if (m_cursor->cx() >= m_width + m_coloffset) {
-    m_coloffset = m_cursor->cx() - m_width + 1;
+  if (cursorx() >= m_width + m_coloffset) {
+    m_coloffset = cursorx() - m_width + 1;
   }
 }
 
