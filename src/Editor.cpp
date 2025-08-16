@@ -51,7 +51,7 @@ void Editor::editorUpdate() {
       if (start < len) {
         tb_printf(0, y, 0, 0, &m_file->row(filerow)->raw().c_str()[start]);
       }
-    } else {
+    } else if (filerow > m_file->numrows()) {
       tb_printf(0, y, TB_BLUE, 0, "~");
     }
   }
