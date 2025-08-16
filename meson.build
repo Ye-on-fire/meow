@@ -10,6 +10,7 @@ sources = [
   'src/Renderer.cpp',
   'src/TextLine.cpp',
   'src/Cursor.cpp',
+  'src/RenderedLine.cpp',
 ]
 
 inc = include_directories('include')

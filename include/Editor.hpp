@@ -6,9 +6,17 @@
 #include <memory>
 #include <termbox2.h>
 
+enum class EditorMode {
+  NORMAL,
+  INSERT,
+  VIUSAL,
+};
+
 class Editor {
 public:
   Editor() = default;
+  Editor(const Editor &other) = delete;
+  Editor &operator=(const Editor &other) = delete;
 
   ~Editor();
 
@@ -21,6 +29,9 @@ public:
   int cursorx() const;
   int cursory() const;
 
+  EditorMode getMode() const;
+  void setMode(EditorMode mode);
+
   // program lifetime control
   void editorInit();
   void editorUpdate();
@@ -28,7 +39,12 @@ public:
 
   // event handle
   void handleEvents();
+
   void handleKeyEvents();
+  void handleKeyEventsNormal();
+  void handleKeyEventsInsert();
+  void handleKeyEventsCommon();
+
   void handleResizeEvents();
 
   // scroll
@@ -50,4 +66,5 @@ private:
   int m_height = 0;
   int m_rowoffset = 0;
   int m_coloffset = 0;
+  EditorMode m_mode = EditorMode::NORMAL;
 };

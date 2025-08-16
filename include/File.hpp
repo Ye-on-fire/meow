@@ -15,9 +15,9 @@ class File {
 public:
   File() = default;
   File(std::string filename);
-  File(const File &other) = default;
+  File(const File &other) = delete;
   File(File &&other) noexcept = default;
-  File &operator=(const File &other) = default;
+  File &operator=(const File &other) = delete;
   File &operator=(File &&other) = default;
 
   ~File() = default;

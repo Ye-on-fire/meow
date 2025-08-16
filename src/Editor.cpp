@@ -13,6 +13,9 @@ int Editor::coloffset() const { return m_coloffset; }
 int Editor::cursorx() const { return m_cursor->cx(); }
 int Editor::cursory() const { return m_cursor->cy(); }
 
+EditorMode Editor::getMode() const { return m_mode; }
+void Editor::setMode(EditorMode mode) { m_mode = mode; }
+
 void Editor::handleEvents() {
   tb_peek_event(&event, 100);
   handleKeyEvents();
@@ -95,12 +98,16 @@ void Editor::editorMoveCursorLeft() {
   }
 }
 
-void Editor::handleKeyEvents() {
+void Editor::handleKeyEventsNormal() {
   const int max_y = m_file->numrows();
   const int max_x = cursory() < max_y ? m_file->row(cursory())->raw_size() : 0;
   if (event.type == TB_EVENT_KEY) {
     if (event.key == 0) {
       switch (event.ch) {
+      case 'i':
+        setMode(EditorMode::INSERT);
+        spdlog::info("Enter insert mode");
+        break;
       case 'h':
         editorMoveCursorLeft();
         break;
@@ -117,7 +124,24 @@ void Editor::handleKeyEvents() {
     } else if (event.key == TB_KEY_CTRL_Q) {
       editorExit();
       exit(0);
-    } else if (event.key == TB_KEY_ARROW_LEFT) {
+    }
+  }
+}
+
+void Editor::handleKeyEventsInsert() {
+  if (event.type == TB_EVENT_KEY) {
+    if (event.key == TB_KEY_ESC) {
+      setMode(EditorMode::NORMAL);
+      spdlog::info("Enter normal mode");
+    }
+  }
+}
+
+void Editor::handleKeyEventsCommon() {
+  const int max_y = m_file->numrows();
+  const int max_x = cursory() < max_y ? m_file->row(cursory())->raw_size() : 0;
+  if (event.type == TB_EVENT_KEY) {
+    if (event.key == TB_KEY_ARROW_LEFT) {
       editorMoveCursorLeft();
     } else if (event.key == TB_KEY_ARROW_RIGHT) {
       editorMoveCursorRight(max_x);
@@ -129,13 +153,21 @@ void Editor::handleKeyEvents() {
   }
 }
 
-void Editor::editorScroll() {
-  // check border of cursor
-  // if (m_cursor->cx() < 0)
-  //   m_cursor->moveTo(0, m_cursor->cy());
-  // if (m_cursor->cy() < 0)
-  //   m_cursor->moveTo(m_cursor->cx(), 0);
+void Editor::handleKeyEvents() {
+  switch (m_mode) {
+  case EditorMode::NORMAL:
+    handleKeyEventsNormal();
+    break;
+  case EditorMode::INSERT:
+    handleKeyEventsInsert();
+    break;
+  case EditorMode::VIUSAL:
+    break;
+  }
+  handleKeyEventsCommon();
+}
 
+void Editor::editorScroll() {
   /// check rowoffset of cursor
   // scroll up, if pos is above visable screen, then scroll up
   if (cursory() < m_rowoffset) {
